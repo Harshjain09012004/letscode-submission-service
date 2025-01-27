@@ -9,11 +9,6 @@ async function pingCheck(){
 async function addSubmission(submission){
     const submissionResponse = await submissionRepository.addSubmission(submission);
 
-    //ADD ERROR HSNDLING
-    if(!submissionResponse){
-        throw {message : "Not able to create submission"};
-    }
-
     console.log(submissionResponse);
 
     const response = await submissionQueueProducer(submission);
