@@ -2,18 +2,39 @@ const submissionQueueProducer = require('../producers/submissionQueue.producer')
 
 const submissionRepository = require('../repository/submission.repository');
 
+const fetchProblemDetails = require('../apis/problemService.api');
+const internalServerError = require('../errors/internalServer.error');
+
 async function pingCheck(){
     return 'pong';
 };
 
 async function addSubmission(submission){
-    const submissionResponse = await submissionRepository.addSubmission(submission);
+    const problemServiceResponse = await fetchProblemDetails(submission.problemId);
 
-    console.log(submissionResponse);
+    if(problemServiceResponse){
+        const problemResponse = problemServiceResponse.data;
 
-    const response = await submissionQueueProducer(submission);
+        const languageStubs = problemResponse.data.codeStubs.find((stubs)=>{
+            return stubs.language.toUpperCase() == submission.language.toUpperCase();
+        });
+        
+        submission.code = languageStubs.startSnippet + "\n\n" + submission.code + "\n\n" + languageStubs.endSnippet;
 
-    return {queueResponse: response, submissionResponse};
+        const submissionResponse = await submissionRepository.addSubmission(submission);
+        console.log(submissionResponse);
+
+        const response = await submissionQueueProducer({
+            code : submission.code,
+            language : submission.language,
+            inputData : problemResponse.data.testcases[0].input,
+            outputData : problemResponse.data.testcases[0].output
+        });
+        return {queueResponse: response, submissionResponse};
+    }
+    else{
+        throw new internalServerError("Some Unknown Error Occured", "Submission Cannot Be Added");
+    }
 };
 
 module.exports = {
