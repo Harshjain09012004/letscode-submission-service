@@ -7,5 +7,6 @@ module.exports = {
     REDIS_HOST : process.env.REDIS_HOST || '127.0.0.1',
     ATLAS_DB_URL : process.env.ATLAS_DB_URL,
     NODE_ENV : process.env.NODE_ENV || 'development',
-    PROBLEM_SERVICE_URL : process.env.PROBLEM_SERVICE_URL
+    PROBLEM_SERVICE_URL : process.env.PROBLEM_SERVICE_URL,
+    WEBSOCKET_SERVICE_URL : process.env.WEBSOCKET_SERVICE_URL
 };

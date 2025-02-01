@@ -27,6 +27,8 @@ async function addSubmission(submission){
         const response = await submissionQueueProducer({
             code : submission.code,
             language : submission.language,
+            userId : submission.userId,
+            submissionId : submissionResponse._id,
             inputData : problemResponse.data.testcases[0].input,
             outputData : problemResponse.data.testcases[0].output
         });
