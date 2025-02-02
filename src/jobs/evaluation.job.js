@@ -12,6 +12,7 @@ class EvalutionJob{
 
     async handle(job){
         try{
+            console.log("Submission Service payload API", this.payload.status)
             const result = await submissionModel.updateOne({_id : this.payload.submissionId},{$set : {
                 status : this.payload.status
             }});
