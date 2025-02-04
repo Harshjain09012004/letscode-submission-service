@@ -1,5 +1,5 @@
 const axios = require('axios');
-const submissionModel = require('../models/submission.model');
+const { updateSubmission } = require('../repository/submission.repository');
 
 const { WEBSOCKET_SERVICE_URL } = require('../config/server.config');
 const WEBSOCKET_API_URL = WEBSOCKET_SERVICE_URL + '/api/v1/sendPayload';
@@ -13,9 +13,7 @@ class EvalutionJob{
     async handle(job){
         try{
             console.log("Submission Service payload API", this.payload.status)
-            const result = await submissionModel.updateOne({_id : this.payload.submissionId},{$set : {
-                status : this.payload.status
-            }});
+            const result = await updateSubmission(this.payload);
 
             if(result.modifiedCount){
                 const response = await axios.post(WEBSOCKET_API_URL, this.payload);

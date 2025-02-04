@@ -12,6 +12,19 @@ async function addSubmission(submission){
     return response;
 };
 
+async function updateSubmission(submission){
+    const response = await submissionModel.updateOne(
+        {
+            _id : submission.submissionId
+        },
+        {
+            $set : {status : submission.status}
+        }
+    );
+    return response;
+}
+
 module.exports = {
-    addSubmission
+    addSubmission,
+    updateSubmission
 };
