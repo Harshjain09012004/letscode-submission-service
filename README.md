@@ -8,6 +8,7 @@ Follow the steps below to set up and run the application.
 Ensure you have the following installed:
 - [Node.js](https://nodejs.org/) (LTS version recommended)
 - [npm](https://www.npmjs.com/) (comes with Node.js) or [yarn](https://yarnpkg.com/)
+- [Redis](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/install-redis-on-windows/)
 
 ### Step 1: Clone the Repository
 ```sh
@@ -35,13 +36,19 @@ PROBLEM_SERVICE_URL
 WEBSOCKET_SERVICE_URL
 ```
 
-### Step 4: Run the Application
+### Step 4: Run redis server in your machine
+Run Command
+```
+sudo service redis-server restart
+```
+
+### Step 5: Run the Application
 Using npm:
 ```sh
 npm run dev
 ```
 
-### Step 5: Access the Application
+### Step 6: Access the Application
 Open your browser and visit:
 ```
 http://localhost:PORT
